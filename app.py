@@ -1,4 +1,3 @@
-import streamlit as pd
 import streamlit as st
 import pandas as pd
 import os
@@ -9,13 +8,10 @@ st.title("📊 Il mio Bilancio Personale")
 
 # 1. FUNZIONE PER CERCARE TUTTI I FILE CSV NELLA CARTELLA
 def elenco_file_bilancio():
-    # Cerca tutti i file che iniziano con 'bilancio_' e finiscono con '.csv'
     files = glob.glob("bilancio_*.csv")
     dati_file = []
     
     for f in files:
-        # Il nome del file è tipo: bilancio_05_2026.csv
-        # Lo dividiamo per prendere mese e anno
         nome_senza_estensione = f.replace(".csv", "")
         parti = nome_senza_estensione.split("_")
         if len(parti) == 3:
@@ -40,6 +36,7 @@ else:
     df_filtrato_anno = df_files[df_files["anno"] == anno_scelto]
     
     # 3. SELEZIONE DEL MESE (Ordinato in base all'anno scelto)
+    # CORRETTO: adesso la variabile si chiama mesi_disponibili senza la "s"
     mesi_disponibili = sorted(df_filtrato_anno["mese"].unique(), reverse=True)
     
     # Dizionario per mostrare i nomi dei mesi invece dei numeri
@@ -51,7 +48,7 @@ else:
     
     mese_scelto_num = st.sidebar.selectbox(
         "2. Scegli il Mese", 
-        mesi_disponibles, 
+        mesi_disponibili, 
         format_func=lambda x: nomi_mesi.get(x, x)
     )
     
@@ -71,7 +68,7 @@ else:
         col1, col2, col3 = st.columns(3)
         col1.metric("🟢 Entrate", f"{ricavi:.2f} €")
         col2.metric("🔴 Uscite", f"{spese:.2f} €")
-        col3.metric("💰 Portafoglio", f"{risparmio:.2f} €", delta=f"{risparmio:.2f} €")
+        col3.metric("💰 Portafoglio", f"{risparmio:.2f} €")
         
         st.write("---")
         
@@ -93,4 +90,4 @@ else:
 # 5. FORM PER AGGIUNGERE NUOVI MOVIMENTI (Salva nel mese corrente)
 st.sidebar.write("---")
 st.sidebar.subheader("✍️ Inserisci Movimento")
-# ... (qui continua il tuo codice del form per salvare i dati, che rimane identico)
+# ... (il tuo form per inserire i dati rimane sotto come prima)
